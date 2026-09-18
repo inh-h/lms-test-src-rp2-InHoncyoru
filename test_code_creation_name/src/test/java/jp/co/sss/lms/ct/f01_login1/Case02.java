@@ -83,19 +83,14 @@ public class Case02 {
 		pageLoadTimeout(20);
 		scrollBy("20");
 
-		//Titleの取得とアサーション
-		assertEquals("ログイン | LMS", webDriver.getTitle());
-
-		// --- ここからロケータのテスト ---
+		//DBに登録されていないユーザを入力
 		WebElement idElement = webDriver.findElement(By.id("loginId"));
 		idElement.clear(); // 初期値をクリア
 		idElement.sendKeys("abc123");
-		assertEquals("abc123", idElement.getAttribute("value"), "ログインIDの値が正しく入力されていること");
 
 		WebElement pwElement = webDriver.findElement(By.id("password"));
 		pwElement.clear(); // 初期値をクリア
 		pwElement.sendKeys("abc123");
-		assertEquals("abc123", pwElement.getAttribute("value"), "パスワードが正しく入力されていること");
 
 		// 開いたページのキャプチャを取得する
 		File file1 = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -109,8 +104,9 @@ public class Case02 {
 
 		// ログインボタンをクリック
 		WebElement classElement = webDriver.findElement(By.className("btn-primary"));
-		assertEquals("ログイン", classElement.getAttribute("value"), "クラス名で指定したボタンのテキストが正しいこと");
 		classElement.click();
+		WebElement errorElement = webDriver.findElement(By.className("error"));
+		assertEquals("* ログインに失敗しました。", errorElement.getText(), "ログインが失敗した場合のエラメッセージが表示されること");
 
 		// 開いたページのキャプチャを取得する
 		File file2 = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
