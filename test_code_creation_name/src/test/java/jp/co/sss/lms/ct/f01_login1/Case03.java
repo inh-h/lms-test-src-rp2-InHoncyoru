@@ -89,11 +89,11 @@ public class Case03 {
 		// --- ここからロケータのテスト ---
 		WebElement idElement = webDriver.findElement(By.id("loginId"));
 		idElement.clear(); // 初期値をクリア
-		idElement.sendKeys("abc123");
+		idElement.sendKeys("StudentAA02");
 
 		WebElement pwElement = webDriver.findElement(By.id("password"));
 		pwElement.clear(); // 初期値をクリア
-		pwElement.sendKeys("abc123");
+		pwElement.sendKeys("Studant1234");
 
 		// 開いたページのキャプチャを取得する
 		File file1 = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -107,8 +107,10 @@ public class Case03 {
 
 		// ログインボタンをクリック
 		WebElement classElement = webDriver.findElement(By.className("btn-primary"));
-		assertEquals("ログイン", classElement.getAttribute("value"), "クラス名で指定したボタンのテキストが正しいこと");
 		classElement.click();
+
+		//Titleの取得とアサーション
+		assertEquals("ログイン | LMS", webDriver.getTitle());
 
 		// 開いたページのキャプチャを取得する
 		File file2 = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
