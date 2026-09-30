@@ -1,6 +1,7 @@
 package jp.co.sss.lms.ct.f03_report;
 
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * 結合テスト レポート機能
@@ -36,6 +39,21 @@ public class Case08 {
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
 		// TODO ここに追加
+		/**
+		 * http://localhost:8080/lmsにアクセスしスクリーンショットを撮影します。
+		 * 
+		 */
+		// 指定のURLの画面を開く
+		goTo("http://localhost:8080/lms");
+		pageLoadTimeout(20);
+		scrollBy("20");
+
+		//Titleの取得とアサーション
+		assertEquals("ログイン | LMS", webDriver.getTitle());
+
+		// 開いたページのキャプチャを取得する、evidenceフォルダに保存
+		getEvidence(new Object() {
+		});
 	}
 
 	@Test
@@ -43,6 +61,32 @@ public class Case08 {
 	@DisplayName("テスト02 初回ログイン済みの受講生ユーザーでログイン")
 	void test02() {
 		// TODO ここに追加
+		/**
+		 * 初回ログイン済みの受講生ユーザーでログインしスクリーンショットを撮影します。（ログインボタン押下前と押下後で2枚）
+		 * 
+		 */
+		// 初回ログイン済みの受講生ユーザーを入力
+		WebElement idElement = webDriver.findElement(By.id("loginId"));
+		idElement.clear(); // 初期値をクリア
+		idElement.sendKeys("StudentAA03");
+
+		WebElement pwElement = webDriver.findElement(By.id("password"));
+		pwElement.clear(); // 初期値をクリア
+		pwElement.sendKeys("Student4321");
+
+		// 開いたページのキャプチャを取得する、evidenceフォルダに保存
+		getEvidence(new Object() {
+		}, "before");
+
+		// ログインボタンをクリック
+		WebElement classElement = webDriver.findElement(By.className("btn-primary"));
+		classElement.click();
+		pageLoadTimeout(100);
+		//Titleの取得とアサーション
+		assertEquals("コース詳細 | LMS", webDriver.getTitle());
+		// 開いたページのキャプチャを取得する、evidenceフォルダに保存
+		getEvidence(new Object() {
+		}, "after");
 	}
 
 	@Test
@@ -50,6 +94,19 @@ public class Case08 {
 	@DisplayName("テスト03 提出済の研修日の「詳細」ボタンを押下しセクション詳細画面に遷移")
 	void test03() {
 		// TODO ここに追加
+		// 「詳細」ボタンをクリック
+		WebElement detailButton = webDriver
+				.findElement(By.xpath("//span[text()='未提出']/ancestor::tr//input[@value='詳細']"));
+		// 開いたページのキャプチャを取得する、evidenceフォルダに保存
+		getEvidence(new Object() {
+		}, "before");
+		detailButton.click();
+		pageLoadTimeout(100);
+		// Titleの取得とアサーション
+		assertEquals("セクション詳細 | LMS", webDriver.getTitle());
+		// 開いたページのキャプチャを取得する、evidenceフォルダに保存
+		getEvidence(new Object() {
+		}, "after");
 	}
 
 	@Test
